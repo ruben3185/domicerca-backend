@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-hlg_7)9-uc9o-*k)3@b)we#e8r5ee2^3#_x0$qkq2bykgsly71
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['backenddomicerca.ngrok.io', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -44,8 +44,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),   
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        ],
+}
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +67,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'DomiCercaBackend.urls'
+
+THUMBNAIL_HIGH_RESOLUTION = True
 
 TEMPLATES = [
     {
@@ -76,9 +89,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DomiCercaBackend.wsgi.application'
 
-CSRF_TRUSTED_ORIGINS = ['https://backenddomicerca.ngrok.io']
-CSRF_COOKIE_DOMAIN = ['backenddomicerca.ngrok.io']
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+# CSRF_TRUSTED_ORIGINS = ['https://backenddomicerca.ngrok.io']
+# CSRF_COOKIE_DOMAIN = ['backenddomicerca.ngrok.io']
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
 
 
 # Database
@@ -109,31 +122,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),   
 
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-        ],
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# STATIC_ROOT = os.path.join(PROJECT_DIR, '/static/')
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
+
 
 
 # Default primary key field type
